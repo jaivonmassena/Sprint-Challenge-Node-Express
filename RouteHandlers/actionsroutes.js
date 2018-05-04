@@ -19,20 +19,24 @@ router.get("/:id", (req, res)=>{
     .then(action => {
       res.json(action)
     })
-    .catch(res.status(404).json({err: 'user does not exist' }))
+    .catch(res.status(404).json({message: 'user does not exist' }))
 })
-router.post("/", (req, res)=>{
-  // const projectInfo = req.body
-  // const {project_id, description, notes } = req.body
-  // const pids = []
-  //
-  // db
-  //   .get()
-  //   .then(projects => {
-  //     projects.map()
-  //   })
 
+router.post("/", (req, res) => {
+    Post = req.body;
+    
+    db.insert(Post).then(response => {
+        res.status(200).json({
+            message: "Post posted successfully!"
+        })
+    }).catch(err => {
+        res.status(500).json({
+            message: "no response :("
+        })
+    })
 })
+
+
 router.delete('/:id', (req, res) => {
   const { id } = req.params
 
@@ -49,7 +53,7 @@ router.delete('/:id', (req, res) => {
             res.status(500).json(error)
           })
       } else {
-        res.status(404).json({ message: `Project with that ${id}` })
+        res.status(404).json({ message: `No Project with that ${id}` })
       }
     })
     .catch(error => res.status(500).json(error))
